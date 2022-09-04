@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  api:
+    build:
+      dockerfile: docker/app.Dockerfile
+      context: .
+    command: air -c .air.toml
+    ports:
+      - 10000:10000
+      - 18000:18000
+    volumes:
+      - ./:/go/src/github.com/ryoshindo/envoy-control-plane
+
+  # envoy:
+  #   build:
+  #     image: docker/envoy.Dockerfile
+  #     context: .
+  #   ports:
+  #     - 9901:9901
