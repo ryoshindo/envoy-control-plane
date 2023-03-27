@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  control:
+    build:
+      context: ./control
+      dockerfile: Dockerfile
+    tty: true
+    command: air -c .air.toml
+    ports:
+      - 10000:10000
+    expose:
+      - 18000
+      - 18090
+    volumes:
+      - ./control:/go/src/github.com/ryoshindo/envoy-control-plane/control
+
+  envoy:
+    image: envoyproxy/envoy:v1.25-latest
+    command: envoy -c /bootstrap.yaml
+    volumes:
+      - ./bootstrap.yaml:/bootstrap.yaml
+    depends_on:
+      - control
